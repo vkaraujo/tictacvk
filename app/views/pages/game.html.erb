@@ -1,6 +1,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
 <div class="container" style="text-align:center">
-  <h1 id="scoretext" style="text-align:center">
+  <h1 id="scoreText" style="text-align:center">
     <%= pluralize(@wins, "Win") %> / <%= pluralize(@losses, "Loss") %> / <%= pluralize(@ties, "Tie") %> 
   </h1>
   <div style="font-size: 32px" id="result"></div>
@@ -11,6 +11,7 @@
     let board;
     let human = 'O';
     let computer = 'X';
+    let currentPlayer;
     let available = [];
     let nodeWidth;
     let nodeHeight;
@@ -77,13 +78,13 @@
             for (let j = 0; j < 3; j++) {
                 let x = nodeWidth * i + nodeWidth / 2;
                 let y = nodeHeight * j + nodeHeight / 2;
-                let spot = board[i][j];
+                let spot = board[i][j]
                 let xRadius = nodeWidth / 4;
                 let yRadius = nodeHeight / 4;
 
                 if (spot == human) {
-                    nofill();
-                    ellipse(x, y nodeWidth / 2, nodeweight / 2);
+                    noFill();
+                    ellipse(x, y, nodeWidth / 2, nodeHeight / 2);
                 } else if (spot == computer) {
                     line(x - xRadius, y - yRadius, x + xRadius, y + yRadius);
                     line(x + xRadius, y - yRadius, x - xRadius, y + yRadius)
@@ -91,30 +92,32 @@
             }
         }
 
-        if (gameInProgress && checkWinner() & currentPlayer == computer) {
+        if (gameInProgress && checkWinner() && currentPlayer == computer) {
             nextTurn();
         }
+        
     }
 
     function mousePressed() {
-        if (gameInProgress & checkWinner() && currentPlayer == human) {
+        if (gameInProgress && checkWinner() && currentPlayer == human) {
             if (mouseX >= 0 && mouseY >=0 && mouseX <= width && mouseY <= height) {
                 let i = floor(mouseX / nodeWidth);
-                let j = floor (mouseY / nodeHeight);
+                let j = floor(mouseY / nodeHeight);
                 if (moveAvailable(i,j)) {
                     board[i][j] = human;
-                    currentPlayer = computer
+                    currentPlayer = computer;
                 }
             }
         }
     }
 
     function keyReleased() {
+        // spacebar = key 32 ->
         if (keyCode === 32) {
             newGame();
         }
     }
-
+   
     function equals3(a, b, c) {
         return a == b && b == c && a != '';
     }
@@ -195,7 +198,7 @@
             currentPlayer = human;
         }
     }
-
+   
     function setScore(result) {
         switch (result) {
             case human:
@@ -211,7 +214,7 @@
         setScoreText();
         updateScores(result);
     }
-    
+
     function setScoreText() {
         scoreText.innerHTML = `${score[0]} Wins / ${score[1]} Losses / ${score[2]} Ties`;
     }
@@ -238,7 +241,7 @@
     function moveAvailable(iPos, jPos) {
         let result;
         if (iPos > 2 || jPos > 2 || iPos < 0 || jPos < 0) {
-            result false;
+            result = false;
         } else {
             result = board[iPos][jPos] === '';
         }
