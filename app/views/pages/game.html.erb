@@ -234,9 +234,12 @@
         }
         formData.append("authenticity_token", "<%= form_authenticity_token %>");
         let request = new XMLHttpRequest();
-        request.open("POST", "http://localhost:3000/played");
+        request.open("POST", "https://tictacgo-vk.herokuapp.com/played");
+        // request.open("POST", "http://localhost:3000/played");
         request.send(formData);
     }
+   
+
 
     function moveAvailable(iPos, jPos) {
         let result;
